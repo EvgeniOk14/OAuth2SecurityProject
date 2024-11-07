@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OAuth2 Authentication</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+<div class="container">
+    <h1>Добро пожаловать!</h1>
+    <p>Нажмите кнопку ниже, чтобы войти через Google и получить доступ к защищённым ресурсам.</p>
+
+    <!-- Кнопка для входа через Google -->
+    <a href="/oauth2/authorization/google" class="login-button">Войти через Google</a>
+
+    <!-- Защищенный контент, который будет отображаться после входа -->
+    <div id="protectedContent" class="hidden">
+        <h2>Защищенный контент</h2>
+        <p id="userData"></p>
+        <button onclick="fetchProtectedContent()">Получить защищённые данные</button>
+    </div>
+</div>
+
+<script>
+    // JavaScript для отображения защищенного контента после входа
+    function fetchProtectedContent() {
+        fetch('/protected')
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                }
+                throw new Error('Не удалось получить защищенные данные');
+            })
+            .then(data => {
+                document.getElementById('userData').textContent = data;
+                document.getElementById('protectedContent').classList.remove('hidden');
+            })
+            .catch(error => console.error(error));
+    }
+</script>
+</body>
+</html>
